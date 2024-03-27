@@ -42,7 +42,7 @@ class _BotNavbarState extends State<BotNavbar> {
               selectedColor: Color.fromARGB(255, 8, 182, 182),
             ),
             SalomonBottomBarItem(
-              icon: Icon(Icons.play_circle),
+              icon: ImageIcon(AssetImage("assets/images/logo.png")),
               title: Text(
                 'Discover',
                 style: GoogleFonts.salsa(),

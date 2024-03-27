@@ -44,7 +44,7 @@ class Carousel_slide extends StatelessWidget {
                 ),
                 Wrap(children: [
                   Text(
-                    rating,
+                    "${rating}",
                     style: GoogleFonts.salsa(
                         textStyle:
                             TextStyle(fontSize: 15, color: Colors.white)),

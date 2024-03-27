@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "469192533881",
+    "project_id": "one-theatre-01",
+    "storage_bucket": "one-theatre-01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469192533881:android:d2f951a70fabeb2496b1a8",
+        "android_client_info": {
+          "package_name": "com.onetheatre.onetheatre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469192533881-82d3fl3ub5oha54orit8g345afkddoev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onetheatre.onetheatre",
+            "certificate_hash": "23d6b1405bdf5a46155661eb20d900eb3516b6df"
+          }
+        },
+        {
+          "client_id": "469192533881-vh5hrrmf8b4deaegnvh9jadd7oi0q77v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdeUOTuSxY-ezwI72c6LpZC-ysJsh7DFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469192533881-vh5hrrmf8b4deaegnvh9jadd7oi0q77v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "469192533881-t3v9fpa9ueo9pg2d8jtnkl9fffue4ehr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onetheatre.onetheatre"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

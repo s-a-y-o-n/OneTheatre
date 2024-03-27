@@ -1,23 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onetheatre/controller/profilecontroller.dart';
+import 'package:onetheatre/view/Login_and_registration/login.dart';
+import 'package:onetheatre/view/Pages/editprofile.dart';
+import 'package:onetheatre/view/Pages/tabs/collections.dart';
 import 'package:onetheatre/view/widgets/profilepost.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: SafeArea(
-        child: Scaffold(
+    return Consumer<ProfileController>(builder: (context, provider, child) {
+      Future<void> followCount(String? userid) async {
+        await provider.FollowCount(userid!);
+      }
+
+      if (provider.userdata == null) {
+        Future.microtask(() => provider.getUserDetails());
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      followCount(provider.userid);
+
+      final user = provider.userdata;
+
+      return DefaultTabController(
+        length: 2,
+        child: SafeArea(
+            child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text(
-              'Username',
+              user!['name'],
               style: GoogleFonts.salsa(fontSize: 17),
             ),
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    provider.userdata = null;
+                    provider.logout(context);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Login()));
+                  },
+                  icon: Icon(Icons.logout))
+            ],
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             forceMaterialTransparency: true,
@@ -45,8 +75,10 @@ class Profile extends StatelessWidget {
                               height: 100,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://media.gettyimages.com/id/459287470/photo/london-england-jim-carrey-attends-a-photocall-for-dumb-and-dumber-to-on-november-20-2014-in.jpg?s=612x612&w=0&k=20&c=HsvA6c9MRcPONox9ny7ZEN_IQ-3-_lGo5BVNwzc6Wvg="),
+                                      image: NetworkImage(user['profileUrl'] ==
+                                              ''
+                                          ? "https://media.istockphoto.com/id/1251464080/vector/people-communication-icon-in-flat-style-people-vector-illustration-on-black-round-background.jpg?s=612x612&w=0&k=20&c=-UIAyz14n25sNlNYqDz7a4_7skVUEhFF4B2pj6vgm4g="
+                                          : user['profileUrl']),
                                       fit: BoxFit.cover),
                                   shape: BoxShape.circle),
                             ),
@@ -54,19 +86,24 @@ class Profile extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Text(
-                              'Name',
+                              user['name'],
                               style: GoogleFonts.salsa(fontSize: 17),
                             ),
                           ),
                           Text(
-                            "Film critic, I write about movies and TV shows",
+                            user['bio'] == '' ? "" : user['bio'],
                             maxLines: null,
                             style: GoogleFonts.salsa(fontSize: 16),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditProfile()));
+                                },
                                 child: Text(
                                   'Edit Profile',
                                   style: GoogleFonts.salsa(),
@@ -102,7 +139,7 @@ class Profile extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Text(
-                                        '221',
+                                        '${provider.followercount}',
                                         style: GoogleFonts.salsa(fontSize: 20),
                                       ),
                                       Text(
@@ -121,7 +158,7 @@ class Profile extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Text(
-                                        '222',
+                                        '${provider.followingcount}',
                                         style: GoogleFonts.salsa(fontSize: 20),
                                       ),
                                       Text(
@@ -165,16 +202,10 @@ class Profile extends StatelessWidget {
                           caption:
                               "With its intricate plot, clever twists, and memorable performances, particularly from Kevin Spacey as the enigmatic Verbal Kint, the film has rightfully earned its place as a classic in the genre. The nonlinear storytelling adds depth to the narrative, inviting viewers to piece together the puzzle alongside the characters");
                     }),
-                Column(
-                  children: [
-                    Center(
-                      child: Text("Collection"),
-                    )
-                  ],
-                )
+                Collections()
               ])),
-        ),
-      ),
-    );
+        )),
+      );
+    });
   }
 }
