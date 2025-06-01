@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onetheatre/model/posts.dart';
 
 class FireFunctions {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -87,5 +88,20 @@ class FireFunctions {
       'profileUrl': user?.photoURL
     };
     await docRef.set(userData);
+  }
+
+  Future<List<Posts>> getPosts() async {
+    final snapshot = await FirebaseFirestore.instance.collection('Posts').get();
+    return snapshot.docs.map((doc) => Posts.fromSnapshot(doc)).toList();
+  }
+
+  Future<String> getUsername(String userid) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('Users').doc(userid).get();
+    if (doc.exists) {
+      return doc['name'];
+    } else {
+      return 'Unknown';
+    }
   }
 }

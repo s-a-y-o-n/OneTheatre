@@ -1,53 +1,38 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onetheatre/controller/discovercontroller.dart';
+import 'package:provider/provider.dart';
 
-class Postwidget extends StatefulWidget {
-  final NetworkImage image;
-  final NetworkImage profileimage;
-  final String Userid;
-  final String caption;
-  Postwidget(
-      {required this.Userid,
-      required this.profileimage,
-      required this.image,
-      required this.caption});
-
-  @override
-  State<Postwidget> createState() => _PostwidgetState();
-}
-
-class _PostwidgetState extends State<Postwidget> {
-  String? name;
-
-  Future<String> fetchUser() async {
-    final docRef =
-        FirebaseFirestore.instance.collection('Users').doc(widget.Userid);
-    final docSnapshot = await docRef.get();
-    final userData = docSnapshot.data()!;
-    return userData['name'];
-  }
-
-  @override
-  void setState(VoidCallback fn) async {
-    name = await fetchUser();
-    super.setState(fn);
-  }
+class PostWidget extends StatelessWidget {
+  final String content;
+  final String? imageurl;
+  final String username;
+  final String? mediatype;
+  final String? movieid;
+  PostWidget(
+      {required this.content,
+      this.imageurl,
+      required this.username,
+      this.mediatype,
+      this.movieid});
 
   @override
   Widget build(BuildContext context) {
-    // fetchUser();
     return SizedBox(
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: widget.profileimage,
+              backgroundImage: NetworkImage(
+                  "https://images.unsplash.com/photo-1694564717876-7436bdf6a236?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0NHxTNE1LTEFzQkI3NHx8ZW58MHx8fHx8"),
               maxRadius: 13,
             ),
             title: Text(
-              "${name}",
+              username,
               style: GoogleFonts.salsa(
                 fontSize: 15,
               ),
@@ -59,17 +44,31 @@ class _PostwidgetState extends State<Postwidget> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              widget.caption,
+              content,
               style: GoogleFonts.salsa(fontSize: 17),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 250,
-            decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: widget.image, fit: BoxFit.contain)),
-          ),
+          (imageurl != "")
+              ? Container(
+                  width: double.infinity,
+                  height: 500,
+                  child: CachedNetworkImage(
+                    imageUrl: imageurl!,
+                    placeholder: (context, url) => Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Colors.black54, Colors.transparent])),
+                    ),
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover)),
+                      );
+                    },
+                  ),
+                )
+              : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

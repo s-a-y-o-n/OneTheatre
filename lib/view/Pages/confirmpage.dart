@@ -25,8 +25,10 @@ class Confirmpage extends StatelessWidget {
     String? media;
     if (mediatype == MediaType.MOVIE) {
       media = 'movie';
-    } else {
+    } else if (mediatype == MediaType.TV) {
       media = 'tv';
+    } else {
+      media = '';
     }
     if (image != null) {
       imageurl = await uploadimage(image);

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onetheatre/controller/discovercontroller.dart';
+import 'package:onetheatre/controller/postcontroller.dart';
 import 'package:onetheatre/controller/profilecontroller.dart';
 import 'package:onetheatre/firebase_options.dart';
 import 'package:onetheatre/view/Splash_and_onboarding/splashscreen.dart';
@@ -21,12 +22,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DiscoverController()),
-        ChangeNotifierProvider(create: (context) => ProfileController())
+        ChangeNotifierProvider(create: (context) => ProfileController()),
+        ChangeNotifierProvider(create: (context) => PostController())
       ],
       child: MaterialApp(
         home: Splash(),
         debugShowCheckedModeBanner: false,
-        // theme: ThemeData.dark(),
+        theme: ThemeData.dark(),
       ),
     );
   }

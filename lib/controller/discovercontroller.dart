@@ -218,4 +218,13 @@ class DiscoverController with ChangeNotifier {
       throw Exception('Not found');
     }
   }
+
+  var postuserdata;
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchPostUser(
+      String userid) async {
+    final postuserdata =
+        await FirebaseFirestore.instance.collection('Users').doc(userid).get();
+    notifyListeners();
+    return postuserdata;
+  }
 }
